@@ -15,14 +15,14 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
+      - name: Install NPM Dependencies
         run: |
           npm install puppeteer-extra puppeteer-extra-plugin-stealth axios puppeteer
 
-      - name: Install Chrome and OS Deps
-        # ეს ბრძანება ავტომატურად აინსტალირებს ყველაფერს რაც Puppeteer-ს სჭირდება Linux-ზე
+      - name: Install Chrome and All OS Dependencies
+        # ეს ბრძანება თავად იპოვის libasound2t64-ს და სხვა საჭირო პაკეტებს
         run: npx puppeteer browsers install chrome --install-deps
 
       - name: Run Scraper
-        # XVFB საჭიროა ბრაუზერის ვირტუალურ მონიტორზე გასაშვებად
+        # XVFB საჭიროა ვირტუალური ეკრანისთვის
         run: xvfb-run --server-args="-screen 0 1920x1080x24" node scraper.js
