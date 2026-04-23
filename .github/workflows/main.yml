@@ -8,19 +8,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install Project Dependencies
-        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
+      - name: Install Dependencies
+        run: |
+          npm install puppeteer-extra puppeteer-extra-plugin-stealth axios puppeteer
 
-      - name: Install Chrome and System Dependencies
-        # ეს ბრძანება ავტომატურად პოულობს და აინსტალირებს ყველა საჭირო პაკეტს (მათ შორის libasound-ს)
+      - name: Install Chrome and OS Deps
+        # ეს ბრძანება ავტომატურად აინსტალირებს ყველაფერს რაც Puppeteer-ს სჭირდება Linux-ზე
         run: npx puppeteer browsers install chrome --install-deps
 
-      - name: Final Launch
+      - name: Run Scraper
+        # XVFB საჭიროა ბრაუზერის ვირტუალურ მონიტორზე გასაშვებად
         run: xvfb-run --server-args="-screen 0 1920x1080x24" node scraper.js
