@@ -1,4 +1,4 @@
-name: FORCE_RUN_AUTOWINITEST
+name: FORCE_RUN_AUTOWINI
 
 on:
   workflow_dispatch: 
@@ -13,16 +13,15 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20 # უმჯობესია გამოიყენოთ Node 20 სტაბილურობისთვის
 
       - name: Install NPM Dependencies
-        run: |
-          npm install puppeteer-extra puppeteer-extra-plugin-stealth axios puppeteer
+        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
 
-      - name: Install Chrome and All OS Dependencies
-        # ეს ბრძანება თავად იპოვის libasound2t64-ს და სხვა საჭირო პაკეტებს
+      - name: Install Puppeteer Browser and OS Dependencies
+        # ეს ბრძანება ხელით პაკეტების წერის ნაცვლად ავტომატურად აყენებს ყველაფერს
         run: npx puppeteer browsers install chrome --install-deps
 
       - name: Run Scraper
-        # XVFB საჭიროა ვირტუალური ეკრანისთვის
+        # ვიყენებთ XVFB-ს ვირტუალური ეკრანისთვის
         run: xvfb-run --server-args="-screen 0 1920x1080x24" node scraper.js
