@@ -1,4 +1,4 @@
-name: FORCE_RUN_AUTOWINID
+name: FORCE_RUN_AUTOWINI
 
 on:
   workflow_dispatch: 
@@ -15,13 +15,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install JS Packages
-        run: npm install puppeteer-extra puppeteer-extra-plugin-stealth axios puppeteer
+      - name: Install NPM Dependencies
+        run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
 
-      - name: Install Chrome and All System Dependencies
-        # ეს ხაზი თავად მიხვდება, რომ libasound2t64 გჭირდებათ და დააყენებს
+      - name: Install Browser and Deps
+        # ეს ავტომატურად დააყენებს libasound2t64-საც და xvfb-საც თუ საჭიროა
         run: npx puppeteer browsers install chrome --install-deps
 
-      - name: Final Launch
-        # XVFB სჭირდება ბრაუზერის "დასანახად" ვირტუალურ სივრცეში
+      - name: Run Scraper
         run: xvfb-run --server-args="-screen 0 1920x1080x24" node scraper.js
