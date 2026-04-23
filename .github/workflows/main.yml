@@ -1,4 +1,4 @@
-name: FORCE_RUN_AUTOWINI
+name: FORCE_RUN_AUTOWINITEST
 
 on:
   workflow_dispatch: 
