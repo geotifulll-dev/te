@@ -18,17 +18,27 @@ jobs:
       with:
         node-version: 20
 
-    - name: Install Google Chrome
+    - name: Install Dependencies
       run: |
-        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
-        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
+        sudo apt-get install -y \
+          libnss3 \
+          libatk1.0-0 \
+          libatk-bridge2.0-0 \
+          libcups2 \
+          libdrm2 \
+          libxkbcommon0 \
+          libxcomposite1 \
+          libxdamage1 \
+          libxfixes3 \
+          libxrandr2 \
+          libgbm1 \
+          libasound2t64
 
-    - name: Install Node Packages
-      run: npm install puppeteer-core puppeteer-extra puppeteer-extra-plugin-stealth axios
-
-    - name: Run Scraper
-      run: node scraper.js
+    - name: Install Puppeteer
+      run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
       env:
-        PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: false
+
+    - name: Final Launch
+      run: node scraper.js

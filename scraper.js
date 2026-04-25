@@ -57,7 +57,7 @@ async function sendBatch(id, name, productsArray) {
         console.log(">> 🚀 [სისტემა] ვიწყებთ Autowini-ს სკრაპინგს...");
         browser = await puppeteer.launch({
     headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
+    // executablePath არ მიუთითო - puppeteer თავად გამოიყენებს Chromium-ს
     args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
