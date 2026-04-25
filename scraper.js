@@ -57,12 +57,14 @@ async function sendBatch(id, name, productsArray) {
         console.log(">> 🚀 [სისტემა] ვიწყებთ Autowini-ს სკრაპინგს...");
         browser = await puppeteer.launch({
     headless: "new",
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     args: [
-        '--no-sandbox', 
-        '--disable-setuid-sandbox', 
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
-        '--single-process'
+        '--single-process',
+        '--no-zygote'
     ]
 });
         const page = await browser.newPage();

@@ -1,32 +1,34 @@
-name: Autowini & Aversi Scraper
+name: Autowini Scraper
 
 on:
   schedule:
     - cron: "0 */2 * * *"
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   run-scraper:
-    # ვაფიქსირებთ 22.04-ზე, რომ Noble (24.04) პაკეტების დასახელებებმა არ დაგვაბნიოს
-    runs-on: ubuntu-22.04
-    
+    runs-on: ubuntu-latest
+
     steps:
     - name: Get Scraper Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
 
-    - name: Install Browser Dependencies
-      # Google Chrome-ის ინსტალაცია თავისით აყენებს ყველა საჭირო lib-ს
+    - name: Install Google Chrome
       run: |
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update
         sudo apt-get install -y google-chrome-stable
 
     - name: Install Node Packages
-      run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
-      
+      run: npm install puppeteer-core puppeteer-extra puppeteer-extra-plugin-stealth axios
+
     - name: Run Scraper
       run: node scraper.js
+      env:
+        PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
