@@ -1,4 +1,4 @@
-name: KIA
+name: Autowini & Aversi Scraper
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-scraper:
-    # ვიყენებთ 22.04 ვერსიას სტაბილურობისთვის
+    # ვაფიქსირებთ 22.04-ზე, რომ Noble (24.04) პაკეტების დასახელებებმა არ დაგვაბნიოს
     runs-on: ubuntu-22.04
     
     steps:
@@ -19,14 +19,14 @@ jobs:
       with:
         node-version: 18
 
-    - name: Install Puppeteer Dependencies
-      # ეს ნაბიჯი აუცილებელია, რომ Linux-მა Puppeteer-ის ბრაუზერი გაუშვას
+    - name: Install Browser Dependencies
+      # Google Chrome-ის ინსტალაცია თავისით აყენებს ყველა საჭირო lib-ს
       run: |
         sudo apt-get update
-        sudo apt-get install -y libgbm-dev libnss3 libatk-bridge2.0-0 libgtk-3-0 libasound2 libxss1
+        sudo apt-get install -y google-chrome-stable
 
     - name: Install Node Packages
       run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
       
-    - name: Run Magic Script
+    - name: Run Scraper
       run: node scraper.js

@@ -56,9 +56,15 @@ async function sendBatch(id, name, productsArray) {
     try {
         console.log(">> 🚀 [სისტემა] ვიწყებთ Autowini-ს სკრაპინგს...");
         browser = await puppeteer.launch({
-            headless: "new",
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security']
-        });
+    headless: "new",
+    args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--single-process'
+    ]
+});
         const page = await browser.newPage();
         await page.setViewport({ width: 1440, height: 900 });
 
