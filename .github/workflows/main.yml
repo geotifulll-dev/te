@@ -1,15 +1,14 @@
-name: Aversi Price Scraper
+name: KIA
 
 on:
   schedule:
-    # 0 */2 * * * ნიშნავს 2 საათში ერთხელ. დღეში იქნება 12 გაშვება ავტომატურად.
     - cron: "0 */2 * * *"
   workflow_dispatch: 
-    # ეს დაგვეხმარება მექანიკურადაც გავუშვათ ხოლმე ღილაკის დაჭერით მოსასინჯად
 
 jobs:
   run-scraper:
-    runs-on: ubuntu-latest
+    # ვიყენებთ 22.04 ვერსიას სტაბილურობისთვის
+    runs-on: ubuntu-22.04
     
     steps:
     - name: Get Scraper Code
@@ -19,6 +18,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 18
+
+    - name: Install Puppeteer Dependencies
+      # ეს ნაბიჯი აუცილებელია, რომ Linux-მა Puppeteer-ის ბრაუზერი გაუშვას
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgbm-dev libnss3 libatk-bridge2.0-0 libgtk-3-0 libasound2 libxss1
 
     - name: Install Node Packages
       run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth axios
